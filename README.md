@@ -1,13 +1,14 @@
 # Blueprint
 
 ---
-#### ***Balatro Seed Tools***
+#### ***Balatro 种子工具***
 
-* Based on [The Soul](https://github.com/MathIsFun0/The-Soul/blob/main/immolate.js) from [MathIsFun0](https://github.com/MathIsFun0)
-* Built with Vite And Mantine for a clean and visually cohesive experience. 
+* 基于 [MathIsFun0](https://github.com/MathIsFun0) 的 [The Soul](https://github.com/MathIsFun0/The-Soul/blob/main/immolate.js) 开发
+* 使用 Vite 和 Mantine 构建，提供简洁且视觉一致的体验。
+* [原版仓库](https://github.com/miaklwalker/Blueprint) | [中文本地化 Fork](https://github.com/jie65535/Blueprint)
 
-## Roadmap
-* Add the ability to select unlocked jokers to the project.
-* Add the ability to tap cards to mark them as purchased and generate a shopping list so you can save it locally and map out seeds more easily
-* polish the card displays.
-* Suggestions ?
+## 路线图
+* 添加选择已解锁小丑牌的功能
+* 添加点击卡牌标记为已购买并生成购物清单的功能，方便保存和规划种子路线
+* 优化卡牌显示效果
+* 更多建议？
