@@ -21,6 +21,7 @@ import { LOCATION_TYPES } from "../modules/const.ts";
 import { useCardStore } from "../modules/state/store.ts";
 import type { BuyWrapperProps } from "../modules/const.ts";
 import type { DeckCard } from "../modules/deckUtils.ts";
+import { translateGameName } from "../modules/i18n/gameTranslations.ts";
 
 export function BuyWrapper({ children, bottomOffset, metaData, horizontal = false }: BuyWrapperProps) {
     const selectedSearchResult = useCardStore(state => state.searchState.selectedSearchResult);
@@ -80,7 +81,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
             h={'100%'}
             style={{ overflow: 'visible' }}
         >
-            <Indicator disabled={!cardIsOwned} inline label="Owned" size={16} position={'top-center'}>
+            <Indicator disabled={!cardIsOwned} inline label="已拥有" size={16} position={'top-center'}>
                 <Tooltip
                     bg={'transparent'}
                     opened={hasUserAttention}
@@ -89,7 +90,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                         <Flex align={'center'} justify={'space-between'} gap={4}>
                             {/* @ts-ignore */}
                             <Badge autoContrast color={metaData?.card?.rarity ? rarityColorMap[metaData?.card?.rarity] : undefined}>
-                                <Text span size={'sm'} fw={'bolder'}>{metaData?.index}</Text> {metaData?.name ?? metaData?.card?.name ?? 'Unknown'}
+                                <Text span size={'sm'} fw={'bolder'}>{metaData?.index}</Text> {translateGameName(metaData?.name ?? metaData?.card?.name ?? '未知')}
                             </Badge>
                             {
                                 metaData?.card &&
@@ -97,7 +98,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                 metaData.card?.edition !== '' &&
                                 metaData.card?.edition !== 'No Edition' &&
                                 <Badge autoContrast color={theme.colors.gray[0]} variant="filled">
-                                    {metaData?.card?.edition}
+                                    {translateGameName(metaData?.card?.edition)}
                                 </Badge>
                             }
                         </Flex>
@@ -193,7 +194,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                     }
                                 }}
                             >
-                                {cardIsOwned ? "Undo" : "Buy"}
+                                {cardIsOwned ? "撤销" : "购买"}
                             </Button>
                             <Menu
                                 trigger={'click-hover'}
@@ -229,7 +230,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                             href={metaData?.link}
                                             target={'_blank'}
                                         >
-                                            Wiki Page
+                                            Wiki 页面
                                         </Menu.Item>
                                     }
                                     {
@@ -249,7 +250,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                                 }
                                             }
                                         >
-                                            {!isLocked ? 'Re roll' : 'Undo'}
+                                            {!isLocked ? '重掷' : '撤销'}
                                         </Menu.Item>
                                     }
                                     {
@@ -258,7 +259,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                             leftSection={<IconCalculator size={16} stroke={1.5} color={theme.colors.blue[5]} />}
                                             onClick={() => { openRerollCalculatorModal(metaData) }}
                                         >
-                                            Calc Reroll
+                                            重掷计算
                                         </Menu.Item>
                                     }
                                     {
@@ -267,7 +268,7 @@ export function BuyWrapper({ children, bottomOffset, metaData, horizontal = fals
                                             leftSection={<IconFlag size={16} stroke={1.5} color={theme.colors.orange[5]} />}
                                             onClick={() => setRerollStartIndex(metaData?.index ?? 0)}
                                         >
-                                            Mark as Start
+                                            标记为起点
                                         </Menu.Item>
                                     }
                                 </Menu.Dropdown>

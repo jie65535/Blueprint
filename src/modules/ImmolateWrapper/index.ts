@@ -1,4 +1,5 @@
 import { EVENT_UNLOCKS, LOCATIONS, options } from "../const.ts";
+import { translateGameName } from "../i18n/gameTranslations.ts";
 import { RandomQueueNames, RNGSource } from "../balatrots/enum/QueueName.ts";
 import { Deck, deckMap } from "../balatrots/enum/Deck.ts";
 import type { StakeType } from "../balatrots/enum/Stake.ts";
@@ -231,21 +232,21 @@ export class CardEngineWrapper implements EngineWrapper {
         const antes = Object.entries(seedAnalysis.antes);
 
         for (const [ante, details] of antes) {
-            output += `==Ante ${ante}==\n`;
-            output += `Boss: ${details.boss}\n`;
-            output += `Tags: ${details.tags.join(', ')}\n`
-            output += `Voucher: ${details.voucher}\n`
-            output += `Shop Queue: \n`
+            output += `==底注 ${ante}==\n`;
+            output += `Boss: ${translateGameName(details.boss)}\n`;
+            output += `标签: ${details.tags.map((t: string) => translateGameName(t)).join(', ')}\n`
+            output += `优惠券: ${translateGameName(details.voucher)}\n`
+            output += `商店队列: \n`
             let count = 0;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < details.queue.length; i++) {
-                output += `${++count}) ${details.queue[i].name}\n`
+                output += `${++count}) ${translateGameName(details.queue[i].name)}\n`
             }
             output += '\n'
-            output += "Packs: \n"
+            output += "补充包: \n"
             for (const pack of details.packs) {
                 // @ts-ignore
-                output += `${pack.name} - ${pack.cards.map((card: { name: string; }) => card.name).join(', ')}\n`
+                output += `${translateGameName(pack.name)} - ${pack.cards.map((card: { name: string; }) => translateGameName(card.name)).join(', ')}\n`
             }
             output += '\n'
         }

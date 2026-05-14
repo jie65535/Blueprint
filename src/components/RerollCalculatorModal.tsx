@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useCardStore } from "../modules/state/store.ts";
 import { Voucher } from "../modules/balatrots/enum/Voucher.ts";
 import { BuyMetaData } from "../modules/classes/BuyMetaData.ts";
+import { translateGameName } from "../modules/i18n/gameTranslations.ts";
 
 interface RerollCalculatorModalProps {
     opened: boolean;
@@ -121,13 +122,13 @@ export function RerollCalculatorModal({ opened, onClose, targetIndex, metaData }
     }, [startIndex, targetIndex, shopSize, rerollDiscount, ownedVouchers]);
 
     return (
-        <Modal opened={opened} onClose={onClose} title="Reroll Calculator" centered size='lg'>
+        <Modal opened={opened} onClose={onClose} title="重掷计算器" centered size='lg'>
             <Stack>
                 <Group align='flex-end' px={'sm'}>
                     <Stack gap={0} flex={4}>
-                        <InputLabel> Starting Point</InputLabel>
+                        <InputLabel>起始位置</InputLabel>
                         <TextInput
-                            value={shopQueue?.[startIndex]?.name ?? 'Unknown'}
+                            value={translateGameName(shopQueue?.[startIndex]?.name ?? '未知')}
                             disabled
                             readOnly
                         />
@@ -142,25 +143,25 @@ export function RerollCalculatorModal({ opened, onClose, targetIndex, metaData }
                 </Group>
                 <Divider />
                 <Stack gap={0} px={'sm'}>
-                    <Text size="xs" c="dimmed">Target Card</Text>
-                    <Text fz='sm' fw={700}>{metaData?.index}) {metaData?.name ?? 'Unknown'}</Text>
+                    <Text size="xs" c="dimmed">目标卡牌</Text>
+                    <Text fz='sm' fw={700}>{metaData?.index}) {translateGameName(metaData?.name ?? '未知')}</Text>
                 </Stack>
                 <Divider />
                 <SimpleGrid cols={{ base: 2, lg: 4 }} px={'sm'}>
                     <Stack gap={0} w='fit-content'>
-                        <Text size="xs" c="dimmed" w='fit-content'>Rolls Needed</Text>
+                        <Text size="xs" c="dimmed" w='fit-content'>所需重掷次数</Text>
                         <Text fw={700} ta='center'>{calculation.rollsNeeded}</Text>
                     </Stack>
                     <Stack gap={0} w='fit-content'>
-                        <Text size="xs" c="dimmed" w='fit-content'>Minimum Cost</Text>
+                        <Text size="xs" c="dimmed" w='fit-content'>最低费用</Text>
                         <Text fw={700} ta='center'>${calculation.splitVisitCost}</Text>
                     </Stack>
                     <Stack gap={0} w='fit-content'>
-                        <Text size="xs" c="dimmed" w='fit-content'>Cards in Shop</Text>
+                        <Text size="xs" c="dimmed" w='fit-content'>商店卡牌数</Text>
                         <Text fw={700} ta='center'>{shopSize}</Text>
                     </Stack>
                     <Stack gap={0} w='fit-content'>
-                        <Text size="xs" c="dimmed" w='fit-content'>Reroll Starting Cost</Text>
+                        <Text size="xs" c="dimmed" w='fit-content'>重掷起始费用</Text>
                         <Text fw={700} ta='center'>${5 - rerollDiscount}</Text>
                     </Stack>
                 </SimpleGrid>
@@ -168,18 +169,18 @@ export function RerollCalculatorModal({ opened, onClose, targetIndex, metaData }
                 <Table withTableBorder>
                     <Table.Thead>
                         <Table.Tr>
-                            <Table.Th>Strategy</Table.Th>
-                            <Table.Th>Cost</Table.Th>
+                            <Table.Th>策略</Table.Th>
+                            <Table.Th>费用</Table.Th>
                             {calculation.voucherSavingsList?.length > 0 && (
-                                <Table.Th> Base Cost</Table.Th>
+                                <Table.Th>基础费用</Table.Th>
                             )}
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
                         <Table.Tr>
                             <Table.Td>
-                                <Text fw={500}>Single Visit</Text>
-                                <Text size="xs" c="dimmed">{calculation.rollsNeeded} rolls in one go</Text>
+                                <Text fw={500}>单次访问</Text>
+                                <Text size="xs" c="dimmed">{calculation.rollsNeeded} 次重掷一次完成</Text>
                             </Table.Td>
                             <Table.Td>
                                 <Text fw={700} c="red">${calculation.singleVisitCost}</Text>
@@ -192,9 +193,9 @@ export function RerollCalculatorModal({ opened, onClose, targetIndex, metaData }
                         </Table.Tr>
                         <Table.Tr>
                             <Table.Td>
-                                <Text fw={500}>Split (3 Visits)</Text>
+                                <Text fw={500}>分三次访问</Text>
                                 <Text size="xs" c="dimmed">
-                                    Evenly split across 3 rounds
+                                    平均分配到3轮中
                                 </Text>
                             </Table.Td>
                             <Table.Td>
@@ -210,18 +211,18 @@ export function RerollCalculatorModal({ opened, onClose, targetIndex, metaData }
                 </Table>
                 {calculation.voucherSavingsList.length > 0 && (
                     <>
-                        <Divider label="Voucher Savings" labelPosition="center" />
+                        <Divider label="优惠券节省" labelPosition="center" />
                         <Table>
                             <Table.Thead>
                                 <Table.Tr>
-                                    <Table.Th>Voucher</Table.Th>
-                                    <Table.Th>Saved <Text span fz='xs' c='dimmed'> ( from best case )</Text></Table.Th>
+                                    <Table.Th>优惠券</Table.Th>
+                                    <Table.Th>节省 <Text span fz='xs' c='dimmed'>（相对最优情况）</Text></Table.Th>
                                 </Table.Tr>
                             </Table.Thead>
                             <Table.Tbody>
                                 {calculation.voucherSavingsList.map((v) => (
                                     <Table.Tr key={v.name}>
-                                        <Table.Td>{v.name}</Table.Td>
+                                        <Table.Td>{translateGameName(v.name)}</Table.Td>
                                         <Table.Td>
                                             <Text fw={700} c="green">${v.savings}</Text>
                                         </Table.Td>

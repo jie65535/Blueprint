@@ -18,7 +18,6 @@ import {
     Tabs,
     Text
 } from "@mantine/core";
-import { toHeaderCase } from "js-convert-case";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { Boss, Tag as RenderTag, Voucher } from "../../Rendering/gameElements.tsx";
 import { BuyMetaData } from "../../../modules/classes/BuyMetaData.ts";
@@ -40,6 +39,7 @@ import type { Blinds } from "../../../modules/state/store.ts";
 import type { Tag } from "../../../modules/balatrots/enum/Tag.ts";
 import type { Ante, Pack } from "../../../modules/ImmolateWrapper/CardEngines/Cards.ts";
 import type { EmblaCarouselType } from 'embla-carousel';
+import { translateGameName } from "../../../modules/i18n/gameTranslations.ts";
 
 function QueueCarousel({ queue, tabName }: { queue: Array<any>, tabName: string }) {
     const selectedBlind = useCardStore(state => state.applicationState.selectedBlind);
@@ -113,12 +113,12 @@ function AntePanel({ ante, tabName, timeTravelVoucherOffset }: {
         <Tabs.Panel w={'100%'} value={tabName}>
             <Paper id="shop-results" withBorder h={'100%'} p={'sm'}>
                 <Group preventGrowOverflow mb={'sm'}>
-                    <Fieldset flex={1} legend={'Shop'}>
+                    <Fieldset flex={1} legend={'商店'}>
                         <QueueCarousel queue={queue} tabName={tabName} />
                     </Fieldset>
-                    <Fieldset legend={'Voucher'}>
+                    <Fieldset legend={'优惠券'}>
                         <Flex h={192} direction={'column'} align={'space-between'}>
-                            <Text ta={'center'} c={'dimmed'} fz={'md'}> Voucher </Text>
+                            <Text ta={'center'} c={'dimmed'} fz={'md'}> 优惠券 </Text>
                             <BuyWrapper
                                 bottomOffset={40}
                                 topOffset={40}
@@ -137,7 +137,7 @@ function AntePanel({ ante, tabName, timeTravelVoucherOffset }: {
                             >
                                 <Voucher voucherName={ante.voucher} />
                             </BuyWrapper>
-                            <Text ta={'center'} fz={'md'}>  {ante.voucher} </Text>
+                            <Text ta={'center'} fz={'md'}>  {translateGameName(ante.voucher ?? '')} </Text>
                         </Flex>
                     </Fieldset>
                 </Group>
@@ -156,11 +156,11 @@ function AntePanel({ ante, tabName, timeTravelVoucherOffset }: {
                                     <Accordion.Control w={'100%'}>
                                         <Group justify={'space-between'} pr={'1rem'}>
                                             <Group>
-                                                <Text fw={500}>{toHeaderCase(String(pack.name))}</Text>
-                                                <Badge color={'blue'}> Cards: {pack.size}</Badge>
+                                                <Text fw={500}>{translateGameName(String(pack.name))}</Text>
+                                                <Badge color={'blue'}> 卡牌数: {pack.size}</Badge>
                                             </Group>
                                             <Badge>
-                                                Pick: {pack.choices}
+                                                选择: {pack.choices}
                                             </Badge>
                                         </Group>
                                     </Accordion.Control>
@@ -229,7 +229,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('uncommonTag')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -246,7 +246,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('rareTag')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -263,7 +263,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('arcanaPack')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -294,7 +294,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('Vouchers')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -311,7 +311,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('topUpTag')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -328,7 +328,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('spectralPack')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -345,7 +345,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('standardPack')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -362,7 +362,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('celestialPack')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -379,7 +379,7 @@ const CustomDetails: CustomDetailsType = {
                         }
                     </Text>
                     <Button onClick={() => navigateToMiscSource('buffoonPack')}>
-                        More Info
+                        更多信息
                     </Button>
                 </Stack>
 
@@ -400,7 +400,7 @@ function TagDisplay({ tag, ante }: { tag: Tag, ante: Ante }) {
             </Popover.Target>
             <Popover.Dropdown>
                 <Box onMouseEnter={open} onMouseLeave={close} maw={375} w={'100%'}>
-                    <Text ta={'center'}>{tag}</Text>
+                    <Text ta={'center'}>{translateGameName(tag)}</Text>
                     <Text>
                         {tagDescriptions[tag] ?? 'No description available'}
                     </Text>
@@ -447,7 +447,7 @@ function SeedExplorer() {
                     value={selectedAnte}
                     onChange={(e) => setSelectedAnte(Number(e.currentTarget.value))}
                     data={Object.keys(SeedResults.antes).map((ante: string) => ({
-                        label: `Ante ${ante}`,
+                        label: `底注 ${ante}`,
                         value: String(ante)
                     }))}
                 />
@@ -462,7 +462,7 @@ function SeedExplorer() {
                     data={blinds.map((blind: string, i: number) => ({
                         value: ['smallBlind', 'bigBlind', 'bossBlind'][i],
                         label: <Group justify={'center'}>
-                            {blind}
+                            {translateGameName(blind)}
                             {i < 2 && (
                                 <TagDisplay tag={pool[itemPool].tags[i] as Tag} ante={pool[itemPool]} />
                             )
@@ -477,7 +477,7 @@ function SeedExplorer() {
                                     </Popover.Target>
                                     <Popover.Dropdown>
                                         <Box>
-                                            <Text>{pool[itemPool].boss}</Text>
+                                            <Text>{translateGameName(pool[itemPool].boss ?? '')}</Text>
                                         </Box>
                                     </Popover.Dropdown>
                                 </Popover>
@@ -508,7 +508,7 @@ function SeedExplorer() {
                                         key={ante}
                                         value={String(ante)}
                                     >
-                                        {`Ante ${ante}`}
+                                        {`底注 ${ante}`}
                                     </Tabs.Tab>
                                 ))
                             }

@@ -5,7 +5,7 @@ import {useSeedResultsContainer} from "../../../modules/state/analysisResultProv
 export default function Index() {
     const seedResults = useSeedResultsContainer();
     if(!seedResults) {
-        return <div>No Results</div>;
+        return <div>无结果</div>;
     }
     const text = CardEngineWrapper.printAnalysis(seedResults);
     return (

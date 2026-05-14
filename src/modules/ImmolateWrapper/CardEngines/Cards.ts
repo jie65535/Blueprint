@@ -188,35 +188,54 @@ export class StandardCard_Final extends Card_Final implements Stringifies {
 
     init(cardData: Card_Final) {
         if (cardData.base === undefined) return;
+        const sealNamesZh: Record<string, string> = {
+            "Red Seal": "红色蜡封", "Blue Seal": "蓝色蜡封",
+            "Gold Seal": "金色蜡封", "Purple Seal": "紫色蜡封",
+        };
+        const editionNamesZh: Record<string, string> = {
+            "Foil": "闪箔", "Holographic": "镭射",
+            "Polychrome": "多彩", "Negative": "负片",
+        };
+        const enhancementNamesZh: Record<string, string> = {
+            "Bonus Card": "奖励牌", "Mult Card": "倍率牌",
+            "Wild Card": "万能牌", "Glass Card": "玻璃牌",
+            "Steel Card": "钢铁牌", "Stone Card": "石头牌",
+            "Gold Card": "黄金牌", "Lucky Card": "幸运牌",
+            "Bonus": "奖励牌", "Mult": "倍率牌",
+            "Wild": "万能牌", "Glass": "玻璃牌",
+            "Steel": "钢铁牌", "Stone": "石头牌",
+            "Gold": "黄金牌", "Lucky": "幸运牌",
+        };
+        const suitMapZh: Record<string, string> = {
+            "C": "梅花", "S": "黑桃", "D": "方片", "H": "红桃",
+        };
         let name = ''
         if (cardData.seal !== "No Seal") {
             this.seal = cardData.seal;
-            name += `${this.seal} `
+            name += `${sealNamesZh[this.seal] || this.seal} `
         }
         if (cardData.edition !== 'No Edition') {
             this.edition = cardData.edition;
-            name += `${this.edition} `
+            name += `${editionNamesZh[this.edition] || this.edition} `
         }
         if (cardData.enhancements !== 'No Enhancement') {
             this.enhancements = cardData.enhancements;
-            name += `${this.enhancements} `
+            name += `${enhancementNamesZh[this.enhancements] || this.enhancements} `
         }
         this.base = cardData.base;
         const rank = this.base[2];
         if (rank === "T") this.rank = "10";
-        else if (rank === "J") this.rank = "Jack";
-        else if (rank === "Q") this.rank = "Queen";
-        else if (rank === "K") this.rank = "King";
-        else if (rank === "A") this.rank = "Ace";
+        else if (rank === "J") this.rank = "J";
+        else if (rank === "Q") this.rank = "Q";
+        else if (rank === "K") this.rank = "K";
+        else if (rank === "A") this.rank = "A";
         else this.rank = rank;
-        name += this.rank
-        name += " of "
         const suit = this.base[0];
         if (suit === "C") this.suit = "Clubs";
         else if (suit === "S") this.suit = "Spades";
         else if (suit === "D") this.suit = "Diamonds";
         else if (suit === "H") this.suit = "Hearts";
-        name += this.suit;
+        name += `${suitMapZh[suit] || suit}${this.rank}`;
         this.name = name;
     }
 }

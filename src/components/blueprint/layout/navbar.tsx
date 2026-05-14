@@ -37,6 +37,7 @@ import { DrawSimulatorModal } from "../../DrawSimulatorModal.tsx";
 import SeedInputAutoComplete from "../../SeedInputAutoComplete.tsx";
 import { useBlueprintTheme } from "../../../modules/state/themeProvider.tsx";
 import type { KnownThemes } from "../../../modules/state/themeProvider.tsx";
+import { deckNames, stakeNames } from "../../../modules/i18n/gameTranslations.ts";
 
 
 export default function NavBar() {
@@ -65,7 +66,6 @@ export default function NavBar() {
     const setShowCardSpoilers = useCardStore(state => state.setShowCardSpoilers);
     const setStart = useCardStore(state => state.setStart);
     const openSelectOptionModal = useCardStore(state => state.openSelectOptionModal);
-    const openFeaturesModal = useCardStore(state => state.openFeaturesModal);
     const openSnapshotModal = useCardStore(state => state.openSnapshotModal);
     const rerollCalculatorModalOpen = useCardStore(state => state.applicationState.rerollCalculatorModalOpen);
     const rerollCalculatorMetadata = useCardStore(state => state.applicationState.rerollCalculatorMetadata);
@@ -116,7 +116,7 @@ export default function NavBar() {
                             label: (
                                 <Group gap="xs">
                                     <IconListSearch size={16} />
-                                    <Text>Efficiency</Text>
+                                    <Text>效率</Text>
                                 </Group>
                             )
                         },
@@ -125,7 +125,7 @@ export default function NavBar() {
                             label: (
                                 <Group gap="xs">
                                     <IconFileText size={16} />
-                                    <Text>Text</Text>
+                                    <Text>文本</Text>
                                 </Group>
                             )
                         }
@@ -135,7 +135,7 @@ export default function NavBar() {
                 <Divider mb='md' />
                 <Group align={'flex-end'}>
                     <Select
-                        label={'Theme'}
+                        label={'主题'}
                         value={themeName}
                         onChange={(t) => {
                             if (!t) return
@@ -159,7 +159,7 @@ export default function NavBar() {
                 />
                 <NumberInput
                     id="setting-max-ante"
-                    label={'Max Ante'}
+                    label={'最大底注'}
                     defaultValue={8}
                     value={localAntes}
                     onChange={(val: number | string) => {
@@ -170,44 +170,27 @@ export default function NavBar() {
                 />
                 <NativeSelect
                     id="setting-deck"
-                    label={'Choose Deck'}
+                    label={'选择牌组'}
                     value={deck}
                     onChange={(e) => setDeck(e.currentTarget.value)}
                 >
-                    <option value="Red Deck">Red Deck</option>
-                    <option value="Blue Deck">Blue Deck</option>
-                    <option value="Yellow Deck">Yellow Deck</option>
-                    <option value="Green Deck">Green Deck</option>
-                    <option value="Black Deck">Black Deck</option>
-                    <option value="Magic Deck">Magic Deck</option>
-                    <option value="Nebula Deck">Nebula Deck</option>
-                    <option value="Ghost Deck">Ghost Deck</option>
-                    <option value="Abandoned Deck">Abandoned Deck</option>
-                    <option value="Checkered Deck">Checkered Deck</option>
-                    <option value="Zodiac Deck">Zodiac Deck</option>
-                    <option value="Painted Deck">Painted Deck</option>
-                    <option value="Anaglyph Deck">Anaglyph Deck</option>
-                    <option value="Plasma Deck">Plasma Deck</option>
-                    <option value="Erratic Deck">Erratic Deck</option>
+                    {Object.entries(deckNames).map(([en, zh]) => (
+                        <option key={en} value={en}>{zh}</option>
+                    ))}
                 </NativeSelect>
                 <NativeSelect
                     id="setting-stake"
-                    label={'Choose Stake'}
+                    label={'选择注数'}
                     value={stake}
                     onChange={(e) => setStake(e.currentTarget.value)}
                 >
-                    <option value="White Stake">White Stake</option>
-                    <option value="Red Stake">Red Stake</option>
-                    <option value="Green Stake">Green Stake</option>
-                    <option value="Black Stake">Black Stake</option>
-                    <option value="Blue Stake">Blue Stake</option>
-                    <option value="Purple Stake">Purple Stake</option>
-                    <option value="Orange Stake">Orange Stake</option>
-                    <option value="Gold Stake">Gold Stake</option>
+                    {Object.entries(stakeNames).map(([en, zh]) => (
+                        <option key={en} value={en}>{zh}</option>
+                    ))}
                 </NativeSelect>
                 <NativeSelect
                     id="setting-version"
-                    label={'Choose Version'}
+                    label={'选择版本'}
                     value={version}
                     onChange={(e) => setVersion(e.currentTarget.value)}
                     mb={'md'}
@@ -216,9 +199,9 @@ export default function NavBar() {
                     <option value="10103">1.0.1c</option>
                     <option value="10014">1.0.0n</option>
                 </NativeSelect>
-                <InputLabel> Cards per Ante</InputLabel>
+                <InputLabel> 每底注卡牌数</InputLabel>
                 <Text fz={'xs'} c={'dimmed'}>
-                    It is recommended to keep this number under 200.
+                    建议此数值保持在200以下。
                 </Text>
                 <Box id="setting-cards-per-ante" mb={'lg'}>
                     <Button.Group w={'100%'}>
@@ -232,9 +215,9 @@ export default function NavBar() {
                         <Button variant="default" c={'blue'} onClick={() => setCardsPerAnte(1000)}>1000</Button>
                     </Button.Group>
                 </Box>
-                <InputLabel> Cards per Misc source</InputLabel>
+                <InputLabel> 每杂项来源卡牌数</InputLabel>
                 <Text fz={'xs'} c={'dimmed'}>
-                    It is recommended to keep this number under 50.
+                    建议此数值保持在50以下。
                 </Text>
                 <Box id="setting-misc-source" mb={'lg'}>
                     <Button.Group w={'100%'}>
@@ -250,8 +233,8 @@ export default function NavBar() {
                 </Box>
                 <Group justify={'space-between'}>
                     <Box id="setting-spoilers">
-                        <Text mb={0} fz={'xs'}>Show Joker Spoilers</Text>
-                        <Tooltip label="Cards that give jokers, are replaced with the joker the card would give."
+                        <Text mb={0} fz={'xs'}>显示小丑牌剧透</Text>
+                        <Tooltip label="给予小丑牌的卡牌会被替换为对应的小丑牌。"
                             refProp="rootRef">
                             <Switch
                                 size={'xl'}
@@ -263,8 +246,8 @@ export default function NavBar() {
                         </Tooltip>
                     </Box>
                     <Box id="setting-quick-reroll">
-                        <Text mb={0} fz={'xs'}>Quick Reroll</Text>
-                        <Tooltip label="Long pressing a card in the shop queue, will reroll that card."
+                        <Text mb={0} fz={'xs'}>快速重掷</Text>
+                        <Tooltip label="长按商店队列中的卡牌将重掷该卡牌。"
                             refProp="rootRef">
                             <Switch
                                 size={'xl'}
@@ -284,7 +267,7 @@ export default function NavBar() {
                         color={hasSettingsChanged ? "green" : "gray"}
 
                     >
-                        Analyze Seed
+                        分析种子
                     </Button>
                     {/*<Button*/}
                     {/*    id="features-button"*/}
@@ -297,7 +280,7 @@ export default function NavBar() {
                     {/*    Features*/}
                     {/*</Button>*/}
                     <Button id="unlocks-button" color={theme.colors.blue[9]} onClick={() => openSelectOptionModal()}>
-                        Modify Unlocks
+                        修改解锁
                     </Button>
                     <Group grow>
                         <Button
@@ -308,10 +291,10 @@ export default function NavBar() {
                                 GaEvent('view_seed_snapshot');
                             }}
                         >
-                            Seed Summary
+                            种子概要
                         </Button>
                         <Button color={theme.colors.red[9]} variant={'filled'} onClick={() => reset()}>
-                            Reset
+                            重置
                         </Button>
                     </Group>
 

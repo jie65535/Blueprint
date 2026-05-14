@@ -35,11 +35,12 @@ export default function Footer() {
             <Center w={'100%'}>
                 <Flex align={'center'} direction={{base: "column", sm: "row"}} gap={'sm'}>
                     <Text ta={'center'} fz={'xs'}>
-                        Made by Michael Walker with {' '}
-                        <Anchor fz={'xs'} href={"https://mantine.dev/"} target={"_blank"}> Mantine </Anchor>,
-                        <Anchor fz={'xs'} href={'https://vite.dev/'}> Vite </Anchor>,
-                        <Anchor fz={'xs'} href={'https://github.com/pmndrs/zustand'}> Zustand </Anchor>,
-                        <Anchor fz={'xs'} href={'https://github.com/MathIsFun0/Immolate'}> Immolate </Anchor>.
+                        由 Michael Walker 使用{' '}
+                        <Anchor fz={'xs'} href={"https://mantine.dev/"} target={"_blank"}>Mantine</Anchor>、
+                        <Anchor fz={'xs'} href={'https://vite.dev/'}>Vite</Anchor>、
+                        <Anchor fz={'xs'} href={'https://github.com/pmndrs/zustand'}>Zustand</Anchor>、
+                        <Anchor fz={'xs'} href={'https://github.com/MathIsFun0/Immolate'}>Immolate</Anchor> 制作。
+                        简体中文翻译由 <Anchor fz={'xs'} href={'https://github.com/jie65535'} target={'_blank'}>jie65535</Anchor> 提供。
                     </Text>
                     <Button
                         component={'a'}
@@ -49,24 +50,23 @@ export default function Footer() {
                         color={'yellow'}
                         leftSection={<IconCoffee/>}
                     >
-                        Buy me a coffee
+                        请我喝杯咖啡
                     </Button>
                     <HoverCard onOpen={() => GaEvent('view_supporters')}>
                         <HoverCardTarget>
                             <Text ta={'center'} fz={'xs'}>
-                                <IconHeart size={'11'}/> Coffee Buyers
+                                <IconHeart size={'11'}/> 咖啡买家
                             </Text>
                         </HoverCardTarget>
                         <HoverCardDropdown w={'100%'} maw={400}>
-                            <Title order={4}>Coffee Buyers</Title>
+                            <Title order={4}>咖啡买家</Title>
                             {
                                 !isPending &&
                                 supporters?.length &&
                                 supporters.length > 0 && (
                                     <>
                                         <Text fz={'xs'} c={'dimmed'}>
-                                            These awesome people have bought me a coffee to support my work and have kept me
-                                            motivated to keep improving Blueprint!:
+                                            这些热心人为我买了一杯咖啡来支持我的工作，并激励我不断改进 Blueprint！：
                                         </Text>
                                         <Divider mb={'sm'}/>
                                     </>
@@ -88,11 +88,10 @@ export default function Footer() {
                                                 return <Text key={i} fz={'sm'}>{s.name}</Text>
                                             }
                                         })
-                                    : <Text fz={'xs'}>No supporters yet</Text>}
+                                    : <Text fz={'xs'}>暂无支持者</Text>}
                             <Divider my={'sm'}/>
                             <Text fz={'xs'} c={'dimmed'}>
-                                If you have recently bought me a coffee and don&#39;t see your name here,
-                                please give it approximately 5 minutes to appear.
+                                如果您最近请我喝了咖啡但没看到您的名字，请等待约5分钟后刷新。
                             </Text>
                         </HoverCardDropdown>
                     </HoverCard>

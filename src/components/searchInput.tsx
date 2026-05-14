@@ -1,6 +1,5 @@
 import React, {useCallback, useMemo, useState} from "react";
 import {Spotlight, closeSpotlight, openSpotlight} from "@mantine/spotlight";
-import {toHeaderCase} from "js-convert-case";
 import {
     ActionIcon,
     Checkbox,
@@ -22,6 +21,7 @@ import {GaEvent} from "../modules/useGA.ts";
 import {useSeedResultsContainer} from "../modules/state/analysisResultProvider.tsx";
 import type {BuyMetaData} from "../modules/classes/BuyMetaData.ts";
 import type {Ante} from "../modules/ImmolateWrapper/CardEngines/Cards.ts";
+import { translateGameName, blindTypeNames } from "../modules/i18n/gameTranslations.ts";
 
 const registeredMiscSources = getMiscCardSources(15).map(source => source.name)
 export default function SearchSeedInput() {
@@ -75,15 +75,29 @@ export default function SearchSeedInput() {
     }, [sourceFilterConfig, setSourceFilterConfig]);
 
 
+    const matchesSearch = (card: any, searchString: string): boolean => {
+        const lower = searchString.toLowerCase();
+        const name = card.name ?? '';
+        const translatedName = translateGameName(name);
+        // Match against original name, translated name, edition, type
+        const searchFields = [
+            name,
+            translatedName,
+            card.edition ?? '',
+            translateGameName(card.edition ?? ''),
+            card.type ?? '',
+            translateGameName(card.type ?? ''),
+        ].map(s => s.toLowerCase());
+        return searchFields.some(f => f.includes(lower));
+    };
+
     const searchResults = useMemo(() => {
         if (searchString === '' || !searchActive) return [];
         const cards: Array<BuyMetaData> = [];
         const antes: Array<Ante> = Object.values(SeedResults?.antes ?? {});
         antes.forEach((ante: Ante) => {
             ante.queue.forEach((card, index) => {
-                const cardString = `${(card.edition && card.edition !== 'No Edition') ? card.edition : ''} ${card.name}`.trim();
-                if (cardString.toLowerCase().includes(searchString.toLowerCase())) {
-
+                if (matchesSearch(card, searchString)) {
                     cards.push({
                         transactionType: "buy",
                         // @ts-ignore I didn't do a great job typing cards throughout the project
@@ -91,7 +105,7 @@ export default function SearchSeedInput() {
                         location: LOCATIONS.SHOP,
                         locationType: LOCATIONS.SHOP,
                         ante: String(ante.ante),
-                        name: cardString,
+                        name: card.name,
                         index: index,
                         blind: 'smallBlind'
                     })
@@ -105,15 +119,14 @@ export default function SearchSeedInput() {
                     // @ts-ignore I didn't do a great job typing cards throughout the project
                     pack.cards.forEach((card, index) => {
                         if(!card) return;
-                        const cardString = `${card?.edition ?? ''} ${card.name}`.trim();
-                        if (cardString.toLowerCase().includes(searchString.toLowerCase())) {
+                        if (matchesSearch(card, searchString)) {
                             cards.push({
                                 transactionType: "buy",
                                 card: card,
                                 location: pack.name,
                                 locationType: LOCATIONS.PACK,
                                 ante: String(ante.ante),
-                                name: cardString,
+                                name: card.name,
                                 index: index,
                                 blind: blind
                             })
@@ -123,15 +136,14 @@ export default function SearchSeedInput() {
             })
             Object.values(ante.miscCardSources).forEach((source) => {
                 source.cards.forEach((card, index) => {
-                    const cardString = `${card.edition} ${card.name}`.trim();
-                    if (cardString.toLowerCase().includes(searchString.toLowerCase())) {
+                    if (matchesSearch(card, searchString)) {
                         cards.push({
                             transactionType: "buy",
                             card: card,
                             location: source.name,
                             locationType: LOCATIONS.MISC,
                             ante: String(ante.ante),
-                            name: cardString,
+                            name: card.name,
                             index: index,
                             blind: 'smallBlind'
                         })
@@ -163,37 +175,37 @@ export default function SearchSeedInput() {
         <>
             <Spotlight
                 nothingFound={searchString.length > 0 ? `
-                    No results found. 
-                   If the card you are searching for is unlocked in game, like Eris or Lucky Cat make sure that you enabled that card in the events tab. (The hamburger menu on the right )
-                `: 'Start typing to search for cards'}
+                    未找到结果。如果您搜索的卡牌在游戏中是解锁的（如${translateGameName("Eris")}或${translateGameName("Lucky Cat")}），请确保您在事件标签页中启用了该卡牌。（右侧的汉堡菜单）
+                `: '开始输入以搜索卡牌'}
                 highlightQuery
                 scrollable
                 maxHeight={'80vh'}
                 actions={
                     searchResults
                         .map((result: any, index) => {
-                            const name = result.name;
-                            const edition = result?.['edition'];
-                            const label = edition && edition !== 'No Edition' ? `${edition} ${name}` : name;
+                            const card = result.card;
+                            const edition = card?.edition && card.edition !== 'No Edition' ? translateGameName(card.edition) : '';
+                            const cardName = translateGameName(card?.name ?? '');
+                            const label = edition ? `${edition} ${cardName}` : cardName;
 
                             const locationType = result?.locationType;
 
                             let description = '';
                             if (locationType === LOCATIONS.SHOP) {
-                                description += `ANTE ${result.ante} SHOP: Card ${result.index + 1}`;
+                                description += `底注 ${result.ante} 商店：卡牌 ${result.index + 1}`;
                             }
                             if (locationType === LOCATIONS.PACK) {
-                                description += `ANTE ${result.ante} Blind: ${toHeaderCase(result.blind)} ${result.location}`;
+                                description += `底注 ${result.ante} 盲注：${blindTypeNames[result.blind] ?? result.blind} ${translateGameName(result.location)}`;
                             }
                             if (locationType === LOCATIONS.MISC) {
-                                description += `ANTE ${result.ante} ${result.location}: Card ${result.index + 1}`;
+                                description += `底注 ${result.ante} ${translateGameName(result.location)}：卡牌 ${result.index + 1}`;
                             }
 
                             return {
                                 id: String(index),
                                 label,
                                 description,
-                                group: result.location,
+                                group: result.locationType === LOCATIONS.SHOP ? '商店' : translateGameName(result.location),
                                 onClick: () => {
                                     closeSpotlight()
                                     goToResults(result)
@@ -214,7 +226,7 @@ export default function SearchSeedInput() {
             <Group align={'flex-end'}>
                 <TextInput
                     flex={1}
-                    placeholder={'Search for cards'}
+                    placeholder={'搜索卡牌'}
                     onClick={()=>{
                         GaEvent('search_bar_clicked')
                         openSpotlight()
@@ -227,8 +239,8 @@ export default function SearchSeedInput() {
                             </HoverCardTarget>
                             <HoverCardDropdown>
                                 <CheckboxGroup
-                                    label={'Search Filters'}
-                                    description={'Select which sources to include in search'}
+                                    label={'搜索筛选'}
+                                    description={'选择要包含在搜索中的来源'}
                                     mb={'sm'}
                                     value={
                                     ['shop', 'packs', 'misc'].filter(source => sourceFilterConfig?.[source as sources]?.enabled)
@@ -248,18 +260,18 @@ export default function SearchSeedInput() {
                                     }}
                                 >
                                     <Group mt={'sm'}>
-                                        <Checkbox value="shop" label='shop'/>
-                                        <Checkbox value='packs' label='packs' />
-                                        <Checkbox value='misc' label='misc' />
+                                        <Checkbox value="shop" label='商店'/>
+                                        <Checkbox value='packs' label='补充包' />
+                                        <Checkbox value='misc' label='杂项' />
                                     </Group>
                                 </CheckboxGroup>
-                                <Divider my={'md'} label={'misc sources'} />
+                                <Divider my={'md'} label={'杂项来源'} />
                                 <SimpleGrid cols={{ sm: 2, md: 3}}>
                                     {sourceFilterConfig.misc.enabled &&
                                         Object.keys(sourceFilterConfig.misc.children || {}).map((child) => (
                                             <Checkbox
                                                 key={child}
-                                                label={child}
+                                                label={translateGameName(child)}
                                                 value={child}
                                                 checked={sourceFilterConfig.misc.children ? sourceFilterConfig.misc.children[child]?.enabled : false}
                                                 onChange={(e) => {

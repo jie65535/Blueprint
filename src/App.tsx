@@ -21,12 +21,12 @@ const steps: Array<Tour> = [
         tour: 'onboarding-tour',
         steps: [
             {
-                title: "Welcome to Blueprint!",
+                title: "欢迎使用 Blueprint！",
                 icon: "",
                 content: (
                     <Stack gap="xs">
                         <Text>
-                            more features for more savvy Balatro scientists - Balatro University
+                            为更精明的 Balatro 科学家提供更多功能
                         </Text>
                         <Text>
                             - Balatro University
@@ -39,12 +39,12 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#view-mode',
-                title: "View Modes",
+                title: "视图模式",
                 icon: "",
                 content: (
                     <Stack gap="xs">
                         <Text>
-                            Allow you to switch between the appearance of the app.
+                            允许您切换应用的外观。
                         </Text>
                     </Stack>
                 ),
@@ -54,12 +54,12 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#seed-config',
-                title: "Seed Configuration",
+                title: "种子配置",
                 icon: "",
                 content: (
                     <Stack gap="xs">
                         <Text>
-                            Enter your seed and select your starting Deck, Stake, and Game Version here.
+                            在此输入种子并选择起始牌组、注数和游戏版本。
                         </Text>
                     </Stack>
                 ),
@@ -69,11 +69,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#setting-max-ante',
-                title: "Granular Control",
+                title: "精细控制",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>This controls how many antes you want Blueprint to analyze for your seed.</Text>
+                        <Text>控制 Blueprint 分析种子的底注数量。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -82,11 +82,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#analyze-button',
-                title: "Run Analysis",
+                title: "运行分析",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Start the analysis!</Text>
+                        <Text>开始分析！</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -95,11 +95,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#ante-navigation',
-                title: "Navigate Antes",
+                title: "浏览底注",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Browse through each Ante.</Text>
+                        <Text>浏览每个底注。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -108,11 +108,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#blind-navigation',
-                title: "Blind Selection",
+                title: "盲注选择",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Switch between Small, Big, and Boss blinds to see what is in the shop.</Text>
+                        <Text>在小盲注、大盲注和Boss盲注之间切换，查看商店内容。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -121,11 +121,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#shop-results',
-                title: "Shop & Packs",
+                title: "商店与补充包",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>See exactly what Jokers, Tarot cards, and Planet cards will appear in your shops and booster packs.</Text>
+                        <Text>查看商店和补充包中确切会出现哪些小丑牌、塔罗牌和星球牌。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -134,11 +134,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#aside-tab-sources',
-                title: "Card Sources",
+                title: "卡牌来源",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>The <b>Sources</b> tab shows a detailed breakdown of <i>every</i> card source: Vouchers, Tags, Bosses, and even Wheel of Fortune outcomes!</Text>
+                        <Text>来源标签显示每个卡牌来源的详细分类：优惠券、标签、Boss、甚至命运之轮的结果！</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -147,11 +147,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#aside-tab-purchases',
-                title: "Purchase History",
+                title: "购买记录",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Keep track of every card you've "purchased" during your analysis, use it to map out runs.</Text>
+                        <Text>跟踪您在分析中"购买"的每张卡牌，用于规划种子路线。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -160,11 +160,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#aside-tab-deck',
-                title: "Your Deck",
+                title: "您的牌组",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>View your current deck state. You can even manually modify cards or clone them to simulate specific scenarios!</Text>
+                        <Text>查看当前牌组状态。您甚至可以手动修改卡牌或克隆它们来模拟特定场景！</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -173,12 +173,12 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#simulate-draw-button',
-                title: "Hand Simulator",
+                title: "手牌模拟器",
                 icon: "",
                 content: (
                     <Stack gap="xs">
                         <Text>
-                            If you buy standard cards, remove cards from your deck, blueprint tracks it all and can show you your draw.
+                            如果您购买标准牌、从牌组中移除卡牌，Blueprint 会跟踪一切并可以显示您的抽牌。
                         </Text>
                     </Stack>
                 ),
@@ -188,11 +188,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#aside-tab-events',
-                title: "Event Tracking",
+                title: "事件追踪",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Unlock Event Driven Jokers, so they can appear in the shop properly.</Text>
+                        <Text>解锁事件驱动的小丑牌，使其能正确出现在商店中。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -201,11 +201,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '#features-button',
-                title: "Visual Features",
+                title: "功能展示",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Highlights a few features of the app. </Text>
+                        <Text>展示应用的一些功能。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -214,11 +214,11 @@ const steps: Array<Tour> = [
             },
             {
                 selector: '[data-tour-id="features-modal"]',
-                title: "Seed Summary",
+                title: "种子概要",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>A quick summary of the seed, and the cards you can find</Text>
+                        <Text>种子的快速概要和您可以找到的卡牌</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -226,11 +226,11 @@ const steps: Array<Tour> = [
                 side: 'left-top'
             },
             {
-                title: "Reroll Calculator",
+                title: "重掷计算器",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Lets you calculate how much it will cost to get to a certain card in the shop.</Text>
+                        <Text>计算在商店队列中到达某张卡牌所需的费用。</Text>
                     </Stack>
                 ),
                 showControls: true,
@@ -238,11 +238,11 @@ const steps: Array<Tour> = [
                 side: 'right'
             },
             {
-                title: "Quick Re roll",
+                title: "快速重掷",
                 icon: "",
                 content: (
                     <Stack gap="xs">
-                        <Text>Lets you quickly reroll the shop, and see what you get. Simply press and hold on a card.</Text>
+                        <Text>快速重掷商店中的卡牌。只需长按卡牌即可。</Text>
                     </Stack>
                 ),
                 showControls: true,

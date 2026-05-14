@@ -4,13 +4,14 @@ import { useDebouncedCallback } from "@mantine/hooks";
 import {popularSeeds, SeedsWithLegendary} from "../modules/const.ts";
 import {useCardStore} from "../modules/state/store.ts";
 import {sanitizeSeed} from "../modules/utils.ts";
+import { deckNames } from "../modules/i18n/gameTranslations.ts";
 
 const seedAutoCompleteData = [
     {
-        group: 'Popular Seeds',
+        group: '热门种子',
         items: popularSeeds
     }, {
-        group: 'Generated Seeds With Legendary Jokers',
+        group: '包含传说小丑的种子',
         items: SeedsWithLegendary
     }
 ];
@@ -26,7 +27,7 @@ interface SeedInputProps {
     placeholder?: string;
 }
 
-function SeedInputAutoComplete({ seed, setSeed, w, showDeckSelect, label = 'Seed', placeholder = 'Enter Seed' }: SeedInputProps) {
+function SeedInputAutoComplete({ seed, setSeed, w, showDeckSelect, label = '种子', placeholder = '输入种子' }: SeedInputProps) {
     const [localSeed, setLocalSeed] = useState(seed);
     const isDirty = useRef(false);
 
@@ -60,21 +61,9 @@ function SeedInputAutoComplete({ seed, setSeed, w, showDeckSelect, label = 'Seed
             value={deck}
             onChange={(e) => setDeck(e.currentTarget.value)}
         >
-            <option value="Red Deck">Red Deck</option>
-            <option value="Blue Deck">Blue Deck</option>
-            <option value="Yellow Deck">Yellow Deck</option>
-            <option value="Green Deck">Green Deck</option>
-            <option value="Black Deck">Black Deck</option>
-            <option value="Magic Deck">Magic Deck</option>
-            <option value="Nebula Deck">Nebula Deck</option>
-            <option value="Ghost Deck">Ghost Deck</option>
-            <option value="Abandoned Deck">Abandoned Deck</option>
-            <option value="Checkered Deck">Checkered Deck</option>
-            <option value="Zodiac Deck">Zodiac Deck</option>
-            <option value="Painted Deck">Painted Deck</option>
-            <option value="Anaglyph Deck">Anaglyph Deck</option>
-            <option value="Plasma Deck">Plasma Deck</option>
-            <option value="Erratic Deck">Erratic Deck</option>
+            {Object.entries(deckNames).map(([en, zh]) => (
+                <option key={en} value={en}>{zh}</option>
+            ))}
         </NativeSelect>
     ) : undefined;
 
@@ -116,11 +105,11 @@ export function QuickAnalyze() {
                     setSeed={setSeed}
                     w={500}
                     showDeckSelect
-                    label="Analyze Seed"
+                    label="分析种子"
                 />
                 <Button onClick={() => {
                     setStart(seed.length > 0);
-                }}> Analyze Seed </Button>
+                }}> 分析种子 </Button>
             </Group>
         </Paper>
     );

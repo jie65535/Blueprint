@@ -19,22 +19,7 @@ import {JokerCard} from "../../Rendering/cards.tsx";
 import {useCardStore} from "../../../modules/state/store.ts";
 import {useSeedResultsContainer} from "../../../modules/state/analysisResultProvider.tsx";
 import type {Ante, CardTuple} from "../../../modules/ImmolateWrapper/CardEngines/Cards.ts";
-
-
-// number suffix 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th, 9th, 10th
-function numberSuffix(num: number) {
-    if (num >= 11 && num <= 13) return 'th';
-    switch (num % 10) {
-        case 1:
-            return 'st';
-        case 2:
-            return 'nd';
-        case 3:
-            return 'rd';
-        default:
-            return 'th';
-    }
-}
+import {translateGameName} from "../../../modules/i18n/gameTranslations.ts";
 
 
 const RARITY_ORDER: { [key: number]: number } = {
@@ -134,7 +119,7 @@ export default function SnapshotModal() {
 
             // Collect Jokers from Queue (Shop)
             anteData.queue.forEach((item: any, index: number) => {
-                processJoker(item, `Ante ${anteNum} Shop`, 'Shop', index);
+                processJoker(item, `底注 ${anteNum} 商店`, 'Shop', index);
             });
 
             // Collect Jokers from Packs
@@ -142,7 +127,7 @@ export default function SnapshotModal() {
                 blind.packs.forEach((pack: any) => {
                     if (pack.cards) {
                         pack.cards.forEach((card: any, index: number) => {
-                            processJoker(card, `Ante ${anteNum} ${pack.name} pack`, 'Pack', index);
+                            processJoker(card, `底注 ${anteNum} ${translateGameName(pack.name)} 补充包`, 'Pack', index);
                         });
                     }
                 });
@@ -152,7 +137,7 @@ export default function SnapshotModal() {
             anteData.miscCardSources.forEach((source: any) => {
                 if (source.cards) {
                     source.cards.forEach((card: any, index: number) => {
-                        processJoker(card, `Ante ${anteNum} ${source.name} queue`, 'Misc', index);
+                        processJoker(card, `底注 ${anteNum} ${translateGameName(source.name)} 队列`, 'Misc', index);
                     });
                 }
             })
@@ -189,20 +174,20 @@ export default function SnapshotModal() {
     }, [uniqueJokers]);
 
     return (
-        <Modal opened={opened} onClose={close} title="Seed Snapshot" size="xl" centered>
+        <Modal opened={opened} onClose={close} title="种子概要" size="xl" centered>
             <Stack p="md" gap="xl">
                 <Paper p="md" withBorder>
-                    <Title order={3} mb="md">Bosses</Title>
+                    <Title order={3} mb="md">Boss盲注</Title>
                     <ScrollArea>
                         <Group wrap="nowrap">
                             {Bosses.map((boss, index) => (
                                 <Stack key={index} align="center" gap="xs">
-                                    <Tooltip label={boss.name}>
+                                    <Tooltip label={translateGameName(boss.name)}>
                                         <Box>
                                             <Boss bossName={boss.name} />
                                         </Box>
                                     </Tooltip>
-                                    <Text size="xs" c="dimmed">Ante {boss.ante}</Text>
+                                    <Text size="xs" c="dimmed">底注 {boss.ante}</Text>
                                 </Stack>
                             ))}
                         </Group>
@@ -210,17 +195,17 @@ export default function SnapshotModal() {
                 </Paper>
 
                 <Paper p="md" withBorder>
-                    <Title order={3} mb="md">Vouchers</Title>
+                    <Title order={3} mb="md">优惠券</Title>
                     <ScrollArea>
                         <Group wrap="nowrap">
                             {Vouchers.map((voucher, index) => (
                                 <Stack key={index} align="center" gap="xs">
-                                    <Tooltip label={voucher.name}>
+                                    <Tooltip label={translateGameName(voucher.name)}>
                                         <Box>
                                             <Voucher voucherName={voucher.name} />
                                         </Box>
                                     </Tooltip>
-                                    <Text size="xs" c="dimmed">Ante {voucher.ante}</Text>
+                                    <Text size="xs" c="dimmed">底注 {voucher.ante}</Text>
                                 </Stack>
                             ))}
                         </Group>
@@ -228,7 +213,7 @@ export default function SnapshotModal() {
                 </Paper>
 
                 <Paper p="md" withBorder>
-                    <Title order={3} mb="md">Jokers</Title>
+                    <Title order={3} mb="md">小丑</Title>
                     <SimpleGrid cols={{ base: 2, sm: 4, lg: 6 }}>
                         {sortedUniqueJokers.map((data, index) => (
                             <HoverCard key={index}  shadow="md" openDelay={300} closeOnClickOutside={true}>
@@ -246,32 +231,32 @@ export default function SnapshotModal() {
                                 <HoverCard.Dropdown w={320}>
                                     <Stack gap={0}>
                                         <Title order={3} mb={0}>
-                                            {data.joker.name}
+                                            {translateGameName(data.joker.name)}
                                         </Title>
                                         <Divider mb='sm' />
-                                        <Text mb='sm' fz="xs">First Opportunity: {data.firstOpportunity}</Text>
+                                        <Text mb='sm' fz="xs">首次出现: {data.firstOpportunity}</Text>
                                         <Divider mb='sm' />
                                         <Group gap="lg">
-                                            <Text fz="sm"><Text fz="sm" span c='dimmed'>Count:</Text> {data.count}</Text>
+                                            <Text fz="sm"><Text fz="sm" span c='dimmed'>数量:</Text> {data.count}</Text>
                                         </Group>
                                         <Group gap="md" mb="sm">
-                                            <Text fz="sm" c='dimmed'>Shop: <Text fz="sm" span c={data.shopCount > 0 ? "green" : "red"}>{data.shopCount}</Text></Text>
-                                            <Text fz="sm" c='dimmed'>Pack: <Text fz="sm" span c={data.packCount > 0 ? "green" : "red"}>{data.packCount}</Text></Text>
-                                            <Text fz="sm" c='dimmed'>Misc: <Text fz="sm" span c={data.miscCount > 0 ? "green" : "red"}>{data.miscCount}</Text></Text>
+                                            <Text fz="sm" c='dimmed'>商店: <Text fz="sm" span c={data.shopCount > 0 ? "green" : "red"}>{data.shopCount}</Text></Text>
+                                            <Text fz="sm" c='dimmed'>补充包: <Text fz="sm" span c={data.packCount > 0 ? "green" : "red"}>{data.packCount}</Text></Text>
+                                            <Text fz="sm" c='dimmed'>其他: <Text fz="sm" span c={data.miscCount > 0 ? "green" : "red"}>{data.miscCount}</Text></Text>
                                         </Group>
 
                                         <Divider mb='sm' />
 
-                                        <Text fz="xs" fw={500}>Locations:</Text>
+                                        <Text fz="xs" fw={500}>位置:</Text>
                                         <ScrollArea h={150}>
                                             <Stack gap={4}>
                                                 {data.locations.map((loc, i) => (
                                                     <Group key={i} gap="xs" wrap="nowrap">
                                                         <Text fz="xs" c="dimmed">• {loc.source}</Text>
                                                         {loc.edition !== 'No Edition' && (
-                                                            <Text fz="xs" c="blue" fw={500}>{loc.edition}</Text>
+                                                            <Text fz="xs" c="blue" fw={500}>{translateGameName(loc.edition)}</Text>
                                                         )}
-                                                        <Text fz="xs" c="dimmed">{loc.index}{numberSuffix(loc.index)} card</Text>
+                                                        <Text fz="xs" c="dimmed">第{loc.index}张卡牌</Text>
                                                     </Group>
                                                 ))}
                                             </Stack>

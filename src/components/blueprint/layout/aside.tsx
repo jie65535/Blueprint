@@ -19,6 +19,7 @@ import {
 import { IconCalendarEvent, IconCards, IconCheck, IconPlayCard, IconShoppingCart } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useCardStore } from "../../../modules/state/store.ts";
+import { translateGameName } from "../../../modules/i18n/gameTranslations.ts";
 import SearchSeedInput from "../../searchInput.tsx";
 import MiscCardSourcesDisplay from "../../miscSourcesDisplay.tsx";
 import PurchaseTimeline from "../../purchaseTimeline.tsx";
@@ -34,9 +35,9 @@ export function EventsPanel() {
     const clearEvents = useCardStore(state => state.clearEvents);
 
     const blindOptions = [
-        { value: "smallBlind", label: "Small Blind" },
-        { value: "bigBlind", label: "Big Blind" },
-        { value: "bossBlind", label: "Boss Blind" }
+        { value: "smallBlind", label: translateGameName("Small Blind") },
+        { value: "bigBlind", label: translateGameName("Big Blind") },
+        { value: "bossBlind", label: translateGameName("Boss Blind") }
     ];
 
     // Track local state for each card's ante and blind selection
@@ -96,10 +97,10 @@ export function EventsPanel() {
     return (
         <Stack gap="md">
             <Group justify="space-between" align="center">
-                <Title order={4}>Unlock Events</Title>
+                <Title order={4}>解锁事件</Title>
                 {events.length > 0 && (
                     <Button variant="light" color="red" size="xs" onClick={clearEvents}>
-                        Clear All Events
+                        清除所有事件
                     </Button>
                 )}
             </Group>
@@ -115,10 +116,10 @@ export function EventsPanel() {
                                 <Group justify="space-between" mb="xs">
                                     <Group>
                                         <IconCalendarEvent size={20} />
-                                        <Text fw={700}>{event.name}</Text>
+                                        <Text fw={700}>{translateGameName(event.name)}</Text>
                                     </Group>
                                     {isTracked && (
-                                        <Badge color="green">Tracked</Badge>
+                                        <Badge color="green">已追踪</Badge>
                                     )}
                                 </Group>
 
@@ -127,7 +128,7 @@ export function EventsPanel() {
                                 <Group>
                                     <NumberInput
                                         size="xs"
-                                        label="Ante"
+                                        label="底注"
                                         disabled={isTracked}
                                         value={ante}
                                         onChange={(value) => handleAnteChange(event.name, String(value) || "1")}
@@ -135,7 +136,7 @@ export function EventsPanel() {
                                     />
                                     <Select
                                         size="xs"
-                                        label="Blind"
+                                        label="盲注"
                                         disabled={isTracked}
                                         value={blind}
                                         onChange={(value) => handleBlindChange(event.name, value || "bigBlind")}
@@ -149,7 +150,7 @@ export function EventsPanel() {
                                         onClick={() => toggleEvent(event.name)}
                                         leftSection={isTracked ? undefined : <IconCheck size={16} />}
                                     >
-                                        {isTracked ? "Remove" : "Activate"}
+                                        {isTracked ? "移除" : "激活"}
                                     </Button>
                                 </Group>
                             </Card>
@@ -202,7 +203,7 @@ export function Aside() {
                             value="sources"
                             leftSection={<IconCards size={16} />}
                         >
-                            Card Sources
+                            卡牌来源
                         </Tabs.Tab>
                         <Tabs.Tab
                             id="aside-tab-purchases"
@@ -214,17 +215,17 @@ export function Aside() {
                                 </Badge>
                             }
                         >
-                            Purchases
+                            购买记录
                         </Tabs.Tab>
                         <Tabs.Tab
                             id="aside-tab-deck"
                             value="deck"
                             leftSection={<IconPlayCard size={16} />}
                         >
-                            Deck
+                            牌组
                         </Tabs.Tab>
                         <Tabs.Tab id="aside-tab-events" value="events">
-                            Events
+                            事件
                         </Tabs.Tab>
                     </Tabs.List>
                 </Tabs>
@@ -245,7 +246,7 @@ export function Aside() {
                             />
                         ) : (
                             <Center h={200}>
-                                <Text c="dimmed">Select a seed to view card sources</Text>
+                                <Text c="dimmed">选择种子以查看卡牌来源</Text>
                             </Center>
                         )}
                     </Tabs.Panel>

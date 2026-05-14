@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 import { EmblaCarouselType } from 'embla-carousel';
 import { Carousel } from "@mantine/carousel";
 import { LOCATIONS } from "../modules/const.ts";
-import { toHeaderCase } from "js-convert-case";
 import { BuyWrapper } from "./buyerWrapper.tsx";
 import { GameCard } from "./Rendering/cards.tsx";
 import { BoosterPack, Voucher } from "./Rendering/gameElements.tsx";
 import { Boss } from "./Rendering/gameElements.tsx";
 import { Tag } from "./Rendering/gameElements.tsx";
 import { Joker_Final, StandardCard_Final } from "../modules/ImmolateWrapper/CardEngines/Cards.ts";
+import { translateGameName, blindTypeNames, miscSourceNames } from "../modules/i18n/gameTranslations.ts";
 
 export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, bossQueue, tagQueue, voucherQueue, wheelQueue, auraQueue, draws }: {
     miscSources?: MiscCardSource[],
@@ -27,7 +27,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
     if (!miscSources || Object.keys(miscSources).length === 0) {
         return (
             <Paper p="md" withBorder mb="md">
-                <Text c="dimmed" size="sm" ta="center">No miscellaneous card sources available for this ante</Text>
+                <Text c="dimmed" size="sm" ta="center">当前底注没有其他卡牌来源</Text>
             </Paper>
         );
     }
@@ -50,13 +50,13 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
     }, [currentSource, selectedResult, currentSource])
     return (
         <Paper p="md" withBorder mb="md">
-            <Title order={3} mb="xs">Card Sources</Title>
+            <Title order={3} mb="xs">卡牌来源</Title>
             <Accordion onChange={e => setCurrentSource(`${e}`)} variant={'separated'} value={currentSource}>
                 {miscSources.map(({ name, cards }: { name: string, cards: any }) => (
                     <Accordion.Item key={String(name)} value={String(name)}>
                         <Accordion.Control>
                             <Group>
-                                <Text fw={500}>{toHeaderCase(String(name))}</Text>
+                                <Text fw={500}>{translateGameName(miscSourceNames[String(name)] || String(name))}</Text>
                             </Group>
                         </Accordion.Control>
                         <Accordion.Panel>
@@ -107,7 +107,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={"Vouchers"} value={"Vouchers"}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Vouchers</Text>
+                            <Text fw={500}>优惠券</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -155,7 +155,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={"Bosses"} value={"Bosses"}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Bosses</Text>
+                            <Text fw={500}>Boss盲注</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -190,7 +190,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={"Tags"} value={"Tags"}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Tags</Text>
+                            <Text fw={500}>标签</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -225,7 +225,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={'WheelOfFortune'} value={'WheelOfFortune'}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Wheel of Fortune</Text>
+                            <Text fw={500}>命运之轮</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -266,7 +266,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={'aura'} value={'aura'}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Aura</Text>
+                            <Text fw={500}>光环</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -306,7 +306,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                 <Accordion.Item key={'boosters'} value={'boosters'}>
                     <Accordion.Control>
                         <Group>
-                            <Text fw={500}>Boosters</Text>
+                            <Text fw={500}>补充包</Text>
                         </Group>
                     </Accordion.Control>
                     <Accordion.Panel>
@@ -354,7 +354,7 @@ export default function MiscCardSourcesDisplay({ miscSources, boosterQueue, boss
                             <Accordion.Item key={String(k)} value={String(k)}>
                                 <Accordion.Control>
                                     <Group>
-                                        <Text fw={500}>{toHeaderCase(String(k))} Deck Order</Text>
+                                        <Text fw={500}>{translateGameName(blindTypeNames[String(k)] || String(k))} 抽牌顺序</Text>
                                     </Group>
                                 </Accordion.Control>
                                 <Accordion.Panel>

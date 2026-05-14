@@ -54,18 +54,18 @@ function SimCard({ card, selected, onClick, onUpdate, onRemove }: {
     // Context menu items
     const renderMenu = () => (
         <Menu.Dropdown>
-            <Menu.Label>Modify Card</Menu.Label>
+            <Menu.Label>修改卡牌</Menu.Label>
 
             <Menu shadow="md" width={200} trigger="hover" position="right-start">
                 <Menu.Target>
                     <Menu.Item leftSection={<IconEdit size={14} />} rightSection={<IconChevronRight size={14} />}>
-                        Enhancement
+                        增强
                     </Menu.Item>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    {['No Enhancement', 'Bonus Card', 'Mult Card', 'Wild Card', 'Glass Card', 'Steel Card', 'Stone Card', 'Gold Card', 'Lucky Card'].map(enh => (
-                        <Menu.Item key={enh} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { enhancement: enh }); }}>
-                            {enh}
+                    {[['No Enhancement', '无增强'], ['Bonus Card', '奖励牌'], ['Mult Card', '倍率牌'], ['Wild Card', '万能牌'], ['Glass Card', '玻璃牌'], ['Steel Card', '钢铁牌'], ['Stone Card', '石头牌'], ['Gold Card', '黄金牌'], ['Lucky Card', '幸运牌']].map(([value, label]) => (
+                        <Menu.Item key={value} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { enhancement: value }); }}>
+                            {label}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
@@ -74,13 +74,13 @@ function SimCard({ card, selected, onClick, onUpdate, onRemove }: {
             <Menu shadow="md" width={200} trigger="hover" position="right-start">
                 <Menu.Target>
                     <Menu.Item leftSection={<IconEdit size={14} />} rightSection={<IconChevronRight size={14} />}>
-                        Edition
+                        版本
                     </Menu.Item>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    {['No Edition', 'Foil', 'Holographic', 'Polychrome', 'Negative'].map(ed => (
-                        <Menu.Item key={ed} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { edition: ed }); }}>
-                            {ed}
+                    {[['No Edition', '无版本'], ['Foil', '闪箔'], ['Holographic', '镭射'], ['Polychrome', '多彩'], ['Negative', '负片']].map(([value, label]) => (
+                        <Menu.Item key={value} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { edition: value }); }}>
+                            {label}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
@@ -89,13 +89,13 @@ function SimCard({ card, selected, onClick, onUpdate, onRemove }: {
             <Menu shadow="md" width={200} trigger="hover" position="right-start">
                 <Menu.Target>
                     <Menu.Item leftSection={<IconEdit size={14} />} rightSection={<IconChevronRight size={14} />}>
-                        Seal
+                        蜡封
                     </Menu.Item>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    {['No Seal', 'Red Seal', 'Blue Seal', 'Gold Seal', 'Purple Seal'].map(seal => (
-                        <Menu.Item key={seal} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { seal: seal }); }}>
-                            {seal}
+                    {[['No Seal', '无蜡封'], ['Red Seal', '红色蜡封'], ['Blue Seal', '蓝色蜡封'], ['Gold Seal', '金色蜡封'], ['Purple Seal', '紫色蜡封']].map(([value, label]) => (
+                        <Menu.Item key={value} onClick={(e) => { e.stopPropagation(); onUpdate(card.id, { seal: value }); }}>
+                            {label}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
@@ -107,7 +107,7 @@ function SimCard({ card, selected, onClick, onUpdate, onRemove }: {
                 leftSection={<IconTrash size={14} />}
                 onClick={(e) => { e.stopPropagation(); onClick(); onRemove(card.id); }}
             >
-                Remove Card
+                移除卡牌
             </Menu.Item>
         </Menu.Dropdown>
     );
@@ -135,13 +135,13 @@ function SimCard({ card, selected, onClick, onUpdate, onRemove }: {
                             <Stack gap={2}>
                                 <Text size="sm" fw={600}>{card.name}</Text>
                                 {card.edition && card.edition !== 'No Edition' && (
-                                    <Text size="xs">Edition: {card.edition}</Text>
+                                    <Text size="xs">版本: {card.edition}</Text>
                                 )}
                                 {card.enhancement && card.enhancement !== 'No Enhancement' && (
-                                    <Text size="xs">Enhancement: {card.enhancement}</Text>
+                                    <Text size="xs">增强: {card.enhancement}</Text>
                                 )}
                                 {card.seal && card.seal !== 'No Seal' && (
-                                    <Text size="xs">Seal: {card.seal}</Text>
+                                    <Text size="xs">蜡封: {card.seal}</Text>
                                 )}
                             </Stack>
                         }
@@ -365,51 +365,51 @@ export function DrawSimulatorModal() {
         <Modal
             opened={opened}
             onClose={close}
-            title="Draw Simulator"
+            title="抽牌模拟器"
             size="lg"
             centered
         >
             <Stack>
                 <Group align="flex-end">
                     <Select
-                        label="Ante"
+                        label="底注"
                         data={Array.from({ length: 8 }, (_, i) => (i + 1).toString())}
                         value={ante}
                         onChange={(val) => val && setAnte(val)}
                         w={80}
                     />
                     <Select
-                        label="Blind"
+                        label="盲注"
                         data={[
-                            { value: '1', label: 'Small Blind' },
-                            { value: '2', label: 'Big Blind' },
-                            { value: '3', label: 'Boss Blind' }
+                            { value: '1', label: '小盲注' },
+                            { value: '2', label: '大盲注' },
+                            { value: '3', label: 'Boss盲注' }
                         ]}
                         value={blind}
                         onChange={(val) => val && setBlind(val)}
                     />
                     <Select
-                        label="Hand Size"
+                        label="手牌上限"
                         data={['5', '6', '7', '8', '9', '10']}
                         value={handSize.toString()}
                         onChange={(val) => val && setHandSize(parseInt(val))}
                         w={80}
                     />
                     <Button onClick={() => simulate()} leftSection={<IconRefresh size={16} />}>
-                        Simulate / Reset
+                        模拟 / 重置
                     </Button>
                 </Group>
 
                 <Paper withBorder p="md" bg="gray.1">
                     <Group justify="space-between" mb="xs">
-                        <Text fw={600}>Hand ({hand.length})</Text>
+                        <Text fw={600}>手牌 ({hand.length})</Text>
                         <SegmentedControl
                             size="xs"
                             value={sortMode}
                             onChange={(val) => setSortMode(val)}
                             data={[
-                                { label: 'Rank', value: 'rank' },
-                                { label: 'Suit', value: 'suit' }
+                                { label: '点数', value: 'rank' },
+                                { label: '花色', value: 'suit' }
                             ]}
                         />
                     </Group>
@@ -428,16 +428,16 @@ export function DrawSimulatorModal() {
                             ))}
                         </SimpleGrid>
                     ) : (
-                        <Text c="dimmed" ta="center" py="xl">No cards in hand</Text>
+                        <Text c="dimmed" ta="center" py="xl">手牌为空</Text>
                     )}
                 </Paper>
 
                 <Group justify="space-between">
                     <Text size="sm" c="dimmed">
-                        Cards remaining in deck: {fullShuffledDeck.length - deckPointer}
+                        牌组剩余卡牌: {fullShuffledDeck.length - deckPointer}
                     </Text>
                     <Group>
-                        <Text size="sm">Discards used: {discardsUsed}</Text>
+                        <Text size="sm">已使用弃牌: {discardsUsed}</Text>
                         <Button
                             color="red"
                             variant="light"
@@ -445,7 +445,7 @@ export function DrawSimulatorModal() {
                             disabled={selectedCards.length === 0}
                             onClick={discard}
                         >
-                            Discard Selected ({selectedCards.length})
+                            弃掉选中 ({selectedCards.length})
                         </Button>
                     </Group>
                 </Group>

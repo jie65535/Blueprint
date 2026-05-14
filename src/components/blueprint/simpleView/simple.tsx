@@ -44,6 +44,7 @@ import type {
 ,
     Stringifies, Tarot_Final
 } from "../../../modules/ImmolateWrapper/CardEngines/Cards.ts";
+import { translateGameName } from "../../../modules/i18n/gameTranslations.ts";
 
 
 function SimpleJokerCard({card, index}: { card: Joker_Final, index?: number }) {
@@ -95,7 +96,7 @@ function SimpleJokerCard({card, index}: { card: Joker_Final, index?: number }) {
     }
     const position = index || ""
     return (
-        <Tooltip label={position + " " + card.name}>
+        <Tooltip label={position + " " + translateGameName(card.name)}>
             <Box>
                 <SimpleRenderCanvas
                     invert={card.edition === "Negative"}
@@ -152,7 +153,7 @@ function SimplePlayingCard({card, index}: { card: StandardCard_Final, index?: nu
     }
     const positionText = index ? `${index} ` : '';
     return (
-        <Tooltip label={positionText + card.name}>
+        <Tooltip label={positionText + translateGameName(card.name)}>
             <SimpleRenderCanvas
                 layers={layers}
             />
@@ -184,7 +185,7 @@ function SimpleConsumables({card, index}: { card: C_Card | undefined, index?: nu
     }
     const positionText = index ? `${index} ` : '';
     return (
-        <Tooltip label={positionText + card?.name}>
+        <Tooltip label={positionText + translateGameName(card?.name || '')}>
             <Box>
                 <SimpleRenderCanvas
                     invert={card?.edition === "Negative"}
@@ -229,7 +230,7 @@ function SimpleVoucher({voucherName}: { voucherName: string | null }) {
         rows: 4
     }));
     return (
-        <Tooltip label={voucherName}>
+        <Tooltip label={translateGameName(voucherName || '')}>
             <Box maw={'80px'}>
                 <SimpleRenderCanvas
                     layers={layers}
@@ -256,7 +257,7 @@ function SimpleTag({tagName}: { tagName: string }) {
         })
     ];
     return (
-        <Tooltip label={tagName}>
+        <Tooltip label={translateGameName(tagName)}>
             <Box h={32} w={32}>
                 <SimpleRenderCanvas
                     layers={layers}
@@ -285,7 +286,7 @@ function SimpleBoss({bossName}: { bossName: string }) {
     ];
 
     return (
-        <Tooltip label={bossName}>
+        <Tooltip label={translateGameName(bossName)}>
             <Box h={32} w={32}>
                 <SimpleRenderCanvas
                     layers={layers}
@@ -396,7 +397,7 @@ function Simple() {
                                 clearLockedCards();
                             }}
                         >
-                            Clear Locked Cards ({Object.keys(lockedCards).length})
+                            清除锁定卡牌 ({Object.keys(lockedCards).length})
                         </Button>
                     </Group>
                 </Affix>
@@ -418,7 +419,7 @@ function Simple() {
 
                 return (
                     <Paper w={'100%'} withBorder shadow={'xl'} mb={'xl'} p={'md'} key={key}>
-                        <Title order={2} mb={'1rem'}>Ante {key}</Title>
+                        <Title order={2} mb={'1rem'}>底注 {key}</Title>
                         <Group align={'flex-start'} justify={'space-between'} mb={'xs'}>
                             <Group align={'flex-start'}>
                                 <SimpleVoucher voucherName={value.voucher}/>
@@ -433,7 +434,7 @@ function Simple() {
                         </Group>
                         <Divider my={'xs'}/>
                         {/* Shop section */}
-                        <Title order={4} mb={'1rem'}>Shop</Title>
+                        <Title order={4} mb={'1rem'}>商店</Title>
                         <DragScroll>
                             <Group wrap={'nowrap'}>
                                 {value.queue.map((card, index) => (
@@ -450,20 +451,20 @@ function Simple() {
                         <Divider my={'xs'}/>
 
                         {/* Packs section */}
-                        <Title order={4} mb={'xs'}>Packs</Title>
+                        <Title order={4} mb={'xs'}>补充包</Title>
                         {Object.entries(blinds).map(([blindName, blind]) => (
                             <Box key={blindName} mb="xs">
                                 <Title order={5} mb={'xs'} c="dimmed">
-                                    {blindName === 'smallBlind' ? 'Small Blind' :
-                                        blindName === 'bigBlind' ? 'Big Blind' : 'Boss Blind'}
+                                    {blindName === 'smallBlind' ? '小盲注' :
+                                        blindName === 'bigBlind' ? '大盲注' : 'Boss盲注'}
                                 </Title>
 
                                 {blind.packs.length > 0 ? (
                                     blind.packs.map((pack, packIndex) => (
                                         <Box key={packIndex} mb="xs">
                                             <Text fw={700} fz="sm" mb="xs">
-                                                {pack.name || `Pack ${packIndex + 1}`} {pack.size} cards,
-                                                pick{' '}{pack.choices}
+                                                {translateGameName(pack.name || '') || `补充包 ${packIndex + 1}`} {pack.size} 张卡牌，
+                                                选择{' '}{pack.choices}
                                             </Text>
                                             <DragScroll>
                                                 <Group wrap={'nowrap'}>
@@ -484,7 +485,7 @@ function Simple() {
                                         </Box>
                                     ))
                                 ) : (
-                                    <Text fz="sm" c="dimmed" mb="md">No packs available</Text>
+                                    <Text fz="sm" c="dimmed" mb="md">暂无补充包</Text>
                                 )}
                             </Box>
                         ))}

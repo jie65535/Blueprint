@@ -14,43 +14,44 @@ import HeroClasses from "./Hero.module.css"
 import type {
     Icon,
     IconProps} from '@tabler/icons-react';
+import { translateGameName } from '../../../modules/i18n/gameTranslations.ts';
 
 export const Features = [
     {
         icon: IconGauge,
-        title: 'Accuracy',
+        title: '准确性',
         description:
-            'Blueprint uses Immolate to analyze Balatro seeds as opposed to a home grown approach this allows for more accurate results and a more reliable experience',
+            'Blueprint 使用 Immolate 来分析 Balatro 种子，而非自研方案，从而提供更准确的结果和更可靠的体验',
     },
     {
         icon: IconUser,
-        title: 'Personalized experience',
+        title: '个性化体验',
         description:
-            'You can customize how you want to view information for your seed, If you only want to see just enough to get by, or if you want to see everything possible',
+            '您可以自定义查看种子信息的方式，无论只想看到基本内容还是想查看所有信息',
     },
     {
         icon: IconEye,
-        title: 'Card Spoilers',
+        title: '卡牌剧透',
         description:
-            'You can choose to see what cards will be given to you by cards like: The Soul, Judgement, Wraith etc.',
+            `您可以选择查看${translateGameName("The Soul")}、${translateGameName("Judgement")}、${translateGameName("Wraith")}等卡牌会给予您什么`,
     },
     {
         icon: IconShoppingCart,
-        title: 'Card Buying',
+        title: '卡牌购买',
         description:
-            'You can buy cards and vouchers from the shop to generate a shopping list, as well as get a more accurate picture of what will appear in your run.',
+            '您可以在商店中购买卡牌和优惠券，生成购物清单，并更准确地了解您运行中将出现的内容',
     },
     {
         icon: IconList,
-        title: 'In Depth',
+        title: '深入分析',
         description:
-            'The App supports viewing cards from several sources besides the shop including sources like uncommon tags, 8-ball, purple seal etc.',
+            `应用支持查看商店以外的多个来源的卡牌，包括${translateGameName("Uncommon Tag")}、${translateGameName("8 Ball")}、${translateGameName("Purple Seal")}等`,
     },
     {
         icon: IconMessage2,
-        title: 'Community',
+        title: '社区',
         description:
-            'The Balatro discord is a very helpful place, and you can often find me there to report bugs or ask for help. I am also open to suggestions and feedback.',
+            'Balatro Discord 是一个非常有帮助的地方，您可以在那里报告错误或寻求帮助。我也欢迎建议和反馈。',
     },
 ];
 
@@ -81,18 +82,15 @@ function HeroText() {
         <Container fluid mb={'xl'}>
             <div className={HeroClasses.inner}>
                 <Title className={HeroClasses.title}>
-                    Fully featured {' '}
+                    现代化界面中的全功能{' '}
                     <Text component="span" className={HeroClasses.highlight} inherit>
-                        seed-routing and analysis
-                    </Text>{' '}
-                    in a modern UI
+                        种子路由和分析
+                    </Text>
                 </Title>
 
                 <Container p={0} size={600}>
                     <Text size="lg" c="dimmed" className={HeroClasses.description}>
-                        Blueprint is a free, open-source tool for analyzing and routing seeds in the game Balatro.
-                        It is designed to help players optimize their seed routing and improve their chances of winning.
-                        It is not affiliated with the game or its developer.
+                        Blueprint 是一个免费开源的 Balatro 种子分析和路由工具，旨在帮助玩家优化种子路由。与游戏或其开发者无关。
                     </Text>
                 </Container>
 
@@ -100,8 +98,7 @@ function HeroText() {
                     <Stack gap={'sm'}>
                         <QuickAnalyze/>
                         <Text ta={'right'} fz={'sm'} c={'dimmed'}>
-                            Want to search for seeds instead ?
-                            Try {" "}
+                            想要搜索种子？试试 {" "}
                             <Text
                                 component={'a'}
                                 fz={'sm'}

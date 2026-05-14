@@ -38,7 +38,7 @@ export default function Header() {
                             <CopyButton value={new URL(window.location.href).toString()}>
                                 {({ copied, copy }) => (
                                     <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
-                                        {copied ? 'Copied url' : 'Copy url'}
+                                        {copied ? '已复制链接' : '复制链接'}
                                     </Button>
                                 )}
                             </CopyButton>
